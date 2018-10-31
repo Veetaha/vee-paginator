@@ -19,8 +19,8 @@ This class is basic for this module. It implements the most generic pagination l
 
 * `TData` is the type of data, served by `Paginator`, you fetch and use this data via some abstract functions (e.g. `displayPageData()`)
 
-## `constructor(options)`
-Constructor can only be invoked via a child class using `super(options)`. `options` is object with the following properties:
+### `constructor(options)`
+Constructor can only be invoked via a child class using `super(options)`. `options` is an object with the following properties:
 
 * `buttonPrev:         JQuery<HTMLButtonElement>` - button used to browse one page back
 * `buttonNext:         JQuery<HTMLButtonElement>` - button used to browse one page forward
@@ -29,6 +29,11 @@ Constructor can only be invoked via a child class using `super(options)`. `optio
 * `itemsPerPage?:      number` -  number of items to display per page (*20* by default) 
 * `startingPage?:      number` - page to start pagination (*0* by default), **page counting is 0-based**
 * `saveDisplayedData?: boolean` - specifies whether to save obtained data in `displayedData` property or not (*false* by default)
+
+### Public methods
+
+### `launch()`
+Makes first `fetchPageData()` request and setups event listeners for DOM events from user input controls. **Always** call this method once and after you have created an instance of `Paginator` to initialize the page view with data.
 
 ### Public readonly properties
 * `buttonPrev:         JQuery<HTMLButtonElement>` === `options.buttonPrev`
@@ -70,11 +75,29 @@ Returns the number of available pages according to given fetched `data`. This me
 This class extends `Paginator<TServerData>` it adds methods for making AJAX get requests to the specified url and data validation utilities.
 
   
- ## `constructor(options)`
+ ### `constructor(options)`
  Constructor can only be invoked via a child class using `super(options)`. `options` is object that extends `PaginatorOptions`, all options specified here are forwarded to `Paginator` constructor. Additional options for this class:
  
  * `jqueryAjaxSettings?:         JQuery<HTMLButtonElement>` - settings object forwarded to JQuery `ajax()` function as `$.ajax(url, jqueryAjaxSettings)`
- * `dataTd?: Types.TypeDescription` - data ['vee-type-safe'](https://www.npmjs.com/package/vee-type-safe)`.TypeDescription` object that is used in `isValidData()` method for validating fetched data as `Types.conforms(data, dataTd)`
+ * `dataTd?: Types.TypeDescription` - data `TypeDescription` (an interface from ['vee-type-safe'](https://www.npmjs.com/package/vee-type-safe) npm package) that is used by the default `isValidData()` method implementation for validating fetched data as `Types.conforms(data, dataTd)`. Forward this option if you don't provide custom method
+
+### Protected abstract methods
+This class implements `fetchPageData()` method from parent `Paginator` class, but instead requires an implementation for `getQueryUrl()` method, and an optional `isValidData()` method.
+### ` getQueryUrl(page, searchInput): string;`
+This method has to return a valid url string to do a get request for the new `page` of data, according to the given user `searchInput` string.
+
+### Protected methods
+
+### `isValidData(suspect): suspect is TServerData`
+
+This method has a default implementation which utilizes [`TypeDescription` object](https://www.npmjs.com/package/vee-type-safe) passed as `dataTd` to constructor options in order to validate that `suspect` conforms expected `TServerData` type. If data is invalid, current page is not refreshed and a console error message is produced.
+
+* `suspect: unknown` - value obtained from `await $.ajax(getQueryUrl(), jqueryAjaxSettings)` call
+
+~~~typescript
+
+
+~~~
 
 
 

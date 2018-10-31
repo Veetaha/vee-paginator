@@ -70,10 +70,10 @@ export abstract class Paginator<TData = unknown> {
 
         this._availablePages = 0;
         this._lastQuery = '';
-        this.setupEvents();
     }
 
     async launch() {
+        this.setupEvents();
         await this.doSearch(0, '');
         this.updateButtons();
     }
@@ -180,7 +180,7 @@ export abstract class AjaxPaginator<TServerData = unknown> extends Paginator<TSe
             this.jqueryAjaxSettings
         );
         if (!this.isValidData(data)) {
-            throw new Error(`Failed to fetch data from server, data:\n${
+            throw new Error(`AjaxPaginator: failed to fetch data from server, data:\n${
                 JSON.stringify(data)
             }`);
         }
