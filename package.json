@@ -1,0 +1,34 @@
+{
+    "name": "vee-paginator",
+    "version": "1.0.0",
+    "description": "Simple browser pagination module (JQuery required)",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Veetaha/vee-paginator.git"
+    },
+    "keywords": [
+        "pagination",
+        "jquery",
+        "typescript",
+        "browser",
+        "ajax"
+    ],
+    "author": "Vitaly Kryvenko",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Veetaha/vee-paginator/issues"
+    },
+    "homepage": "https://github.com/Veetaha/vee-paginator#readme",
+    "dependencies": {
+        "jquery": "latest",
+        "vee-type-safe": "latest"
+    },
+    "devDependencies": {
+        "@types/jquery": "latest"
+    }
+}
